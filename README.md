@@ -1,0 +1,1 @@
+# projectCore_netCore_angularJS
