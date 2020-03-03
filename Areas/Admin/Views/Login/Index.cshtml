@@ -1,0 +1,219 @@
+﻿@using CongThongTin.Models
+@{ 
+    var err = new List<validateObject>();
+    if (ViewBag.Error != null)
+    {
+         err = ViewBag.Error as List<validateObject>;
+    }
+}
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Login | CTT</title>
+    <meta name="description" content="ProUI is a Responsive Bootstrap Admin Template">
+    <meta name="author" content="pixelcave">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+    <link rel="shortcut icon" href="img/favicon.png">
+    <link rel="stylesheet" href="~/admin/Content/bootstrap.min-3.6.css">
+    <link rel="stylesheet" href="~/admin/Content/plugins-3.8.css">
+    <link rel="stylesheet" href="~/admin/Content/main-3.8.css">
+    <link rel="stylesheet" href="~/admin/Content/themes-3.1.css">
+    <link href="~/admin/Content/1_1_hint.min.css" rel="stylesheet" />
+    <style type="text/css">
+        #login-container {
+            top: 55px;
+        }
+        .input-group.captcha {
+            margin: 0 auto;
+            text-align: center;
+        }
+
+            .input-group.captcha img {
+                float: left;
+                width: 75%;
+            }
+
+            .input-group.captcha a {
+                font-size: 19px;
+                padding: 7px 9px;
+                float: left;
+            }
+
+            .input-group.captcha .form-control {
+                width: 100%;
+                border: 1px solid #ccc !important;
+                margin-top: 4px;
+            }
+            .form-group.form-actions{
+                padding: 15px 20px;
+            }
+    </style>
+
+    <script src="~/admin/Scripts/modernizr.min-3.6.js"></script>
+</head>
+<body>
+    <img src="~/admin/Content/image/login_full_bg2.jpg" alt="Login Full Background" class="full-bg animation-pulseSlow">
+    <div id="login-container" class="animation-fadeIn">
+        <div class="login-title text-center">
+            <h1><i class="gi gi-flash"></i> <strong>CTT</strong><br><small>Xin mời <strong>Đăng nhập</strong> hoặc <strong>Đăng ký</strong></small></h1>
+        </div>
+        <div class="block push-bit">
+            @*<p class="text-red" style="color: red;">@Html.ValidationMessage("")</p>*@
+            <p>
+                <ul style="color: red;">
+                    @foreach (var entry in err)
+                    {
+                        <li>@entry.ErrorMessage</li>
+                    }
+                </ul>
+
+            </p>
+            @* Form login *@
+            <form action="Login" method="post" id="form-login" class="form-horizontal form-bordered form-control-borderless">
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="gi gi-envelope"></i></span>
+                            <input type="text" id="login-email" asp-for="username" name="username" class="form-control input-lg" placeholder="Tài khoản">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="gi gi-asterisk"></i></span>
+                            <input type="password" id="login-password" asp-for="password" name="password" class="form-control input-lg" placeholder="Mật khẩu">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <div class="input-group captcha">
+                            <div class="col-xs-12 col-md-6">
+                                <img id="captcha-img" src="" />
+                                <a class="btn-refresh"><i class="fa fa-refresh" aria-hidden="true"></i></a>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <input type="text" asp-for="captcha" name="captcha" class="form-control" placeholder="Mã captcha" autocomplete="off" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-actions">
+                    <div class="col-xs-4">
+                        <label class="switch switch-primary  hint--top" aria-label="Ghi nhớ đăng nhập?">
+                            <input type="checkbox" id="login-remember-me" asp-for="remember" name="remember" checked>
+                            <span></span>
+                        </label>
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Đăng nhập</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12 text-center">
+                        <a href="javascript:void(0)" id="link-reminder-login"><small>Quên mật khẩu?</small></a> -
+                        <a href="javascript:void(0)" id="link-register-login"><small>Tạo tài khoản</small></a>
+                    </div>
+                </div>
+            </form>
+
+            @* Quên mật khẩu *@
+            <form action="login_full.php#reminder" method="post" id="form-reminder" class="form-horizontal form-bordered form-control-borderless display-none">
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="gi gi-envelope"></i></span>
+                            <input type="text" id="reminder-email" name="reminder-email" class="form-control input-lg" placeholder="Email">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-actions">
+                    <div class="col-xs-12 text-right">
+                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Reset Password</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12 text-center">
+                        <small>Did you remember your password?</small> <a href="javascript:void(0)" id="link-reminder"><small>Login</small></a>
+                    </div>
+                </div>
+            </form>
+
+            @* Đăng ký *@
+            <form action="login_full.php#register" method="post" id="form-register" class="form-horizontal form-bordered form-control-borderless display-none">
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="gi gi-user"></i></span>
+                            <input type="text" id="register-firstname" name="register-firstname" class="form-control input-lg" placeholder="Firstname">
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" id="register-lastname" name="register-lastname" class="form-control input-lg" placeholder="Lastname">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="gi gi-envelope"></i></span>
+                            <input type="text" id="register-email" name="register-email" class="form-control input-lg" placeholder="Email">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="gi gi-asterisk"></i></span>
+                            <input type="password" id="register-password" name="register-password" class="form-control input-lg" placeholder="Password">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="gi gi-asterisk"></i></span>
+                            <input type="password" id="register-password-verify" name="register-password-verify" class="form-control input-lg" placeholder="Verify Password">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-actions">
+                    <div class="col-xs-6">
+                        <a href="#modal-terms" data-toggle="modal" class="register-terms">Terms</a>
+                        <label class="switch switch-primary" data-toggle="tooltip" title="Agree to the terms">
+                            <input type="checkbox" id="register-terms" name="register-terms">
+                            <span></span>
+                        </label>
+                    </div>
+                    <div class="col-xs-6 text-right">
+                        <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Register Account</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12 text-center">
+                        <small>Do you have an account?</small> <a href="javascript:void(0)" id="link-register"><small>Login</small></a>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <script src="~/admin/Scripts/jquery.min-3.6.js"></script>
+    <script src="~/admin/Scripts/bootstrap.min-3.6.js"></script>
+    <script src="~/admin/Scripts/plugins-3.8.js"></script>
+    <script src="~/admin/Scripts/app-3.7.js"></script>
+    <script src="~/admin/Scripts/pages/login_1.4.js"></script>
+    <script>
+        $(function () {
+            Login.init();
+            $("#captcha-img").attr("src", window.location.origin + "/get-captcha")
+            $(".captcha .btn-refresh").click(function () {
+                $("#captcha-img").attr("src", window.location.origin + '/get-captcha?t=' + new Date().getTime());
+            });
+        });
+    </script>
+    <script>(function (i, s, o, g, r, a, m) { i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () { (i[r].q = i[r].q || []).push(arguments) }, i[r].l = 1 * new Date(); a = s.createElement(o), m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m) })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga'); ga('create', 'UA-16158021-6', 'auto'); ga('send', 'pageview');</script>
+</body>
+</html>

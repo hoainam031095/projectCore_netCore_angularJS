@@ -1,0 +1,13 @@
+﻿@using CongThongTin.App_Data;
+@{
+    ViewData["Title"] = "Privacy Policy";
+    var listException = ViewBag.listException as List<TbException>;
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to detail your site's privacy policy 1.</p>
+@foreach(var item in listException)
+{
+    <p>@item.Key</p>
+}
+

@@ -1,0 +1,102 @@
+﻿
+.block{
+    border-bottom: none;
+}
+.export_content {
+    padding-bottom: 45px !important;
+}
+.dataTables_wrapper .dt-button {
+    border: 1px solid #d4d4d4;
+}
+.dataTables_wrapper .dataTables_processing {
+    padding-top: 30px;
+    display: block !important;
+}
+.dataTables_wrapper > div {
+    border: none;
+}
+.dataTables_wrapper .dataTables_info {
+    width: 50%;
+    float: left;
+    background-color: #fff;
+    border: none;
+    padding-left: 10px;
+    padding-top: 13px;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    border: none;
+    /*width: 49%;*/
+    text-align: center;
+}
+
+/*custom menu paging*/
+a.paginate_button.current, a.paginate_button:hover {
+    background-color: #1bbae1;
+    color: #fff;
+}
+a.paginate_button {
+    margin-left: 3px;
+    margin-right: 3px;
+    border: none !important;
+    border-radius: 25px !important;
+    padding: 4px 9px;
+    font-size: 12px;
+    line-height: 1.5;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: #fff;
+}
+    a.paginate_button.disabled {
+        background-color: #fff;
+        color: #ccc;
+        cursor: not-allowed;
+    }
+
+.printMe {
+    display: none;
+}
+
+@media print {
+    div:not(.printMe) {
+        display: none;
+    }
+
+    .printMe {
+        display: block
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    tbody {
+        display: table-row-group;
+    }
+
+
+    .printMe table.tbdata {
+        border: 1px solid DimGray;
+        page-break-inside: auto;
+    }
+
+        .printMe table.tbdata th {
+            border: 1px solid DimGray;
+            font-family: Arial;
+            color: black;
+            background-color: lightgrey;
+            padding-left: 7px;
+        }
+
+        .printMe table.tbdata tr {
+            page-break-inside: auto;
+        }
+
+        .printMe table.tbdata td {
+            border: 1px solid DarkGray;
+            color: #000;
+            padding-left: 7px;
+            padding-top: 3px;
+            padding-bottom: 2px;
+        }
+}

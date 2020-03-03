@@ -1,0 +1,262 @@
+﻿<!DOCTYPE html>
+<!--[if IE 9]>
+<html class="no-js lt-ie10" lang="en">
+    <![endif]-->
+<!--[if gt IE 9]><!-->
+<html ng-app="myapp">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="REFRESH" content="1202">
+    <title>@ViewBag.Title | CTT</title>
+    <meta name="description" content="ProUI is a Responsive Bootstrap Admin Template">
+    <meta name="author" content="pixelcave">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+
+    @*<link rel="stylesheet" href="~/admin/Content/bootstrap.min-3.6.css">*@
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/admin/Content/plugins-3.8.css">
+    <link rel="stylesheet" href="~/admin/Content/main-3.8.css">
+    <link rel="stylesheet" href="~/admin/Content/themes-3.1.css">
+    <link href="~/admin/Content/jquery-confirm.css" rel="stylesheet" />
+    <link href="~/admin/Content/1_1_hint.min.css" rel="stylesheet" />
+    <link href="~/css/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/admin/Content/custom.css" rel="stylesheet" />
+    <link href="~/admin/Content/menuSidearCustom.css" rel="stylesheet" />
+
+    @RenderSection("styles", false)
+
+    <script src="~/admin/Scripts/jquery.min-3.6.js"></script>
+</head>
+
+<body ng-controller="global" ng-cloak>
+    <div class="printMe"></div>
+    <div id="page-wrapper">
+        <div class="preloader themed-background">
+            <!-- <h1 class="push-top-bottom text-light text-center"><strong>Data </strong>ADN</h1> -->
+            <div class="inner">
+                <h3 class="text-light visible-lt-ie10"><strong>Loading..</strong></h3>
+                <div class="preloader-spinner hidden-lt-ie10"></div>
+            </div>
+        </div>
+        <div id="page-container" class="sidebar-partial sidebar-visible-lg sidebar-no-animations">
+            <div id="sidebar" class="sidebar-custom">
+                <div id="sidebar-scroll" class="sidebar-scroll-custom">
+                    <div class="sidebar-content">
+                        <a href="#" class="sidebar-brand">
+                            <i class="gi gi-flash"></i><span class="sidebar-nav-mini-hide"><strong>Data </strong>ADN</span>
+                        </a>
+                        <div class="sidebar-section sidebar-user clearfix sidebar-nav-mini-hide">
+                            <div class="sidebar-user-avatar-action">
+                                <div class="sidebar-user-avatar">
+                                    <a href="#">
+                                        <img src="~/admin/Content/image/avatar2.jpg" alt="avatar">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="sidebar-user-name" id="sidebar-user-name">Nguyễn Hoài Nam</div>
+                            <div style="clear:both;"></div>
+                            <div class="sidebar-user-links">
+                                <a href="#modal-user-settings" data-toggle="modal" data-placement="bottom" title="Profile"><i class="gi gi-user"></i></a>
+                                <a href="javascript:void(0)" class="enable-tooltip" data-placement="bottom" title="Settings" onclick="$('#modal-user-settings').modal('show');"><i class="gi gi-cogwheel"></i></a>
+                                <a href="@Url.Action("Index","Logout","Admin")" data-toggle="tooltip" data-placement="bottom" title="Logout" onclick="clearST()"><i class="gi gi-exit"></i></a>
+                            </div>
+                        </div>
+                        @Html.Partial("~/Areas/Admin/Views/Shared/MenuTop.cshtml")
+                    </div>
+                </div>
+            </div>
+            <div id="main-container">
+                <header class="navbar navbar-default">
+                    <ul class="nav navbar-nav-custom">
+                        <li>
+                            <a href="javascript:void(0)" onclick="App.sidebar('toggle-sidebar');this.blur();">
+                                <i class="fa fa-bars fa-fw"></i>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="gi gi-settings"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-custom dropdown-options">
+                                <li class="dropdown-header text-center">Header Style</li>
+                                <li>
+                                    <div class="btn-group btn-group-justified btn-group-sm">
+                                        <a href="javascript:void(0)" class="btn btn-primary" id="options-header-default">Light</a>
+                                        <a href="javascript:void(0)" class="btn btn-primary" id="options-header-inverse">Dark</a>
+                                    </div>
+                                </li>
+                                <li class="dropdown-header text-center">Page Style</li>
+                                <li>
+                                    <div class="btn-group btn-group-justified btn-group-sm">
+                                        <a href="javascript:void(0)" class="btn btn-primary" id="options-main-style">Default</a>
+                                        <a href="javascript:void(0)" class="btn btn-primary" id="options-main-style-alt">Alternative</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form action="page_ready_search_results.php" method="post" class="navbar-form-custom">
+                        <div class="form-group">
+                            <input type="text" id="top-search" name="top-search" class="form-control" placeholder="Search..">
+                        </div>
+                    </form>
+                    <ul class="nav navbar-nav-custom pull-right">
+                        @*<li>
+                                @if (ck.Value == "en-US")
+                                {
+                                    <a href="@Url.Action("ReverseLanguage","Utils")">
+                                        <img src="~/admin/Content/flag/United-Kingdom_flat.png" style="border: none; border-radius: 0;width: 30px;height: 30px; vertical-align: middle;" />
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("ReverseLanguage","Utils")">
+                                        <img src="~/admin/Content/flag/Vietnam_flat.png" style="border: none;  border-radius: 0;width: 30px;height: 30px; vertical-align: middle;" />
+                                    </a>
+                                }
+                            </li>*@
+                        <li class="dropdown">
+                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="~/admin/Content/image/avatar2.jpg" alt="avatar"> <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
+                                <li class="dropdown-header text-center">Account</li>
+                                <li>
+                                    <a href="page_ready_user_profile.php">
+                                        <i class="fa fa-user fa-fw pull-right"></i>
+                                        Profile
+                                    </a>
+                                    <a href="#modal-user-settings" data-toggle="modal">
+                                        <i class="fa fa-cog fa-fw pull-right"></i>
+                                        Settings
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="page_ready_lock_screen.php"><i class="fa fa-lock fa-fw pull-right"></i> Lock Account</a>
+                                    <a href="@Url.Action("Index","Logout","Admin")"><i class="fa fa-ban fa-fw pull-right"></i> Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </header>
+                <div id="page-content">
+                    @RenderBody()
+                </div>
+                <footer class="clearfix">
+                    <div class="pull-right">
+                        Crafted with <i class="fa fa-heart text-danger"></i> by <a href="#" target="_blank">Nguyễn Hoài Nam</a>
+                    </div>
+                    <div class="pull-left">
+                        <span>2019</span> &copy; <a href="#" target="_blank">CTT</a>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
+    <div id="modal-user-settings" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h2 class="modal-title"><i class="fa fa-pencil"></i> Settings</h2>
+                </div>
+                <div class="modal-body">
+                    <form action="index.php" method="post" enctype="multipart/form-data" class="form-horizontal form-bordered" onsubmit="return false;">
+                        <fieldset>
+                            <legend>Vital Info</legend>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Username</label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static">Admin</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="user-settings-email">Email</label>
+                                <div class="col-md-8">
+                                    <input type="email" id="user-settings-email" name="user-settings-email" class="form-control" value="admin@example.com">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="user-settings-notifications">Email Notifications</label>
+                                <div class="col-md-8">
+                                    <label class="switch switch-primary">
+                                        <input type="checkbox" id="user-settings-notifications" name="user-settings-notifications" value="1" checked="">
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Password Update</legend>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="user-settings-password">New Password</label>
+                                <div class="col-md-8">
+                                    <input type="password" id="user-settings-password" name="user-settings-password" class="form-control" placeholder="Please choose a complex one..">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="user-settings-repassword">Confirm New Password</label>
+                                <div class="col-md-8">
+                                    <input type="password" id="user-settings-repassword" name="user-settings-repassword" class="form-control" placeholder="..and confirm it!">
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="form-group form-actions">
+                            <div class="col-xs-12 text-right">
+                                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-sm btn-primary">Save Changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* SCRIPT *@
+    <script src="~/admin/Scripts/bootstrap.min-3.6.js"></script>
+    <script src="~/admin/Scripts/plugins-3.8.js"></script>
+    <script src="~/admin/Scripts/jquery-confirm.js"></script>
+    <script src="~/admin/Scripts/app-3.7.js"></script>
+    <script src="~/admin/Scripts/ckeditor/ckeditor.js"></script>
+    <script src="~/admin/Scripts/modernizr.min-3.6.js"></script>
+
+    <script src="~/admin/Scripts/angular.min.js"></script>
+    @*<script src="~/admin/Scripts/ui-bootstrap-tpls-0.11.0.js"></script>*@
+    <script src="~/admin/Scripts/ui-bootstrap-tpls-1.3.3.js"></script>
+
+    <script type="text/javascript">
+        var myApp = angular.module('myapp', ['ui.bootstrap']);
+
+        myApp.run(function ($rootScope, $http) {
+
+            //Hàm trả về dữ liệu paging
+            $rootScope.loadDataPaging = function (data, currentPage, itemsOnPage) {
+                return data.slice(((currentPage - 1) * itemsOnPage), ((currentPage) * itemsOnPage))
+            }
+
+            //Hàm trả về class fontAnwesome icon sort
+            $rootScope.getIconSort = function (sortBy, fields, sortType) {
+                return (sortBy != fields ? 'fa-sort dis' : (!sortType ? 'fa-sort-desc' : 'fa-sort-asc'));
+            }
+
+        });
+        var scope, scopeG;
+        myApp.controller('global', function ($scope) {
+            scopeG = $scope;
+        });
+    </script>
+
+    <script src="~/js/sweetalert2.min.js"></script>
+    <script src="~/admin/Scripts/utils.js"></script>
+
+    @* End script *@
+
+    @RenderSection("scripts", false)
+</body>
+
+</html>

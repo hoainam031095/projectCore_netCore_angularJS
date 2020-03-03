@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewData["Title"] = "Người dùng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<ul class="breadcrumb breadcrumb-top">
+    Hệ thống >
+    <a href="#">Nhóm quyền</a>
+</ul>
+<div class="block">
+    <div class="block-title">
+        <div class="block-options pull-right">
+            <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-primary hint--top" aria-label="Thu nhỏ" data-toggle="block-toggle-content"><i class="fa fa-arrows-v"></i></a>
+            <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-primary hint--top" aria-label="Toàn màn hình" data-toggle="block-toggle-fullscreen"><i class="fa fa-desktop"></i></a>
+            <div class="btn-group hint--top" aria-label="Khác" ]">
+                <a class="btn btn-alt btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" aria-expanded="false"><i class="fa fa-angle-down"></i></a>
+                <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
+                    <li>
+                        <a href="javascript:void(0)" onclick="uploadFileBSD()">Thêm nhóm quyền</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="reloadTable()">Danh sách nhóm quyền</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="javascript:void(0)">Đóng</a></li>
+                </ul>
+            </div>
+        </div>
+        <h2><strong>Danh sách tài khoản</strong></h2>
+    </div>
+    <div class="block-content">
+        <iframe id="myIframe" style="opacity: 0; width: 100%; height: 0px;" seamless="seamless"></iframe>
+        <div class="list-colum-table-fileBSD"></div>
+        <table id="list_fileBSD" class="table table-vcenter table-condensed table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">STT</th>
+                    <th class="text-center">Tài khoản</th>
+                    <th class="text-center">Họ tên</th>
+                    <th class="text-center">Trạng thái</th>
+                    <th class="text-center">Nhóm quyền</th>
+                    <th class="text-center">Xử lý</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in model.jUser track by item.id">
+                    <td class="text-center">{{model.jUser.indexOf(item) + 1}}</td>
+                    <td>{{item.userName}}</td>
+                    <td>{{item.fullName}}</td>
+                    <td>{{item.isActive === true ? 'Hoạt động' : 'Ngưng hoạt động'}}</td>
+                    <td>{{item.roleGroupName}}</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+            //myApp = angular.module("myapp", []);
+            myApp.controller('global', ['$scope', '$http', function ($scope, $http) {
+                $scope.model = @Html.Raw(Json.Serialize(Model.Value));
+
+            scope = $scope;
+            }]);
+    </script>
+}
+

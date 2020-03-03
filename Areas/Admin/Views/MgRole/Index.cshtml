@@ -1,0 +1,290 @@
+﻿@{
+    ViewData["Title"] = "Nhóm quyền";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link href="~/admin/Content/page/MgRole.css" rel="stylesheet" />
+}
+<ul class="breadcrumb breadcrumb-top">
+    Hệ thống >
+    <a href="#">Nhóm quyền</a>
+</ul>
+<div class="block" ng-controller="RolePage">
+    <div class="block-title">
+        <div class="block-options pull-right">
+            <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-primary hint--top" aria-label="Thu nhỏ" data-toggle="block-toggle-content"><i class="fa fa-arrows-v"></i></a>
+            <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-primary hint--top" aria-label="Toàn màn hình" data-toggle="block-toggle-fullscreen"><i class="fa fa-desktop"></i></a>
+            <div class="btn-group hint--top" aria-label="Khác" ]">
+                <a class="btn btn-alt btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" aria-expanded="false"><i class="fa fa-angle-down"></i></a>
+                <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
+                    <li>
+                        <a href="javascript:void(0)" ng-click="loadFormAddNewRole()">Thêm nhóm quyền</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="javascript:void(0)">Đóng</a></li>
+                </ul>
+            </div>
+        </div>
+        <h2><strong>Danh sách nhóm quyền</strong></h2>
+    </div>
+
+    @* Danh sách nhóm quyền *@
+    <div class="block-content">
+        <div>
+            @Html.Partial("~/Areas/Admin/Views/PartialGlobal/filterTable.cshtml")
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="list_role" class="table table-vcenter table-condensed table-bordered" ui-jq="dataTable" ui-options="dataTableOpt">
+                        <thead>
+                            <tr>
+                                <th class="text-center">STT</th>
+                                <th class="text-center" ng-click="sortBy = 'groupName'; sortType = !sortType">
+                                    Tên nhóm quyền <i class="fa {{getIconSort(sortBy, 'groupName', sortType)}}"></i>
+                                </th>
+                                <th class="text-center" ng-click="sortBy = 'description'; sortType = !sortType">
+                                    Mô tả <i class="fa {{getIconSort(sortBy, 'description', sortType)}}"></i>
+                                </th>
+                                <th class="text-center">Trạng thái</th>
+                                <th class="text-center">Xử lý</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in dataPagingRole() | orderBy:sortBy:sortType">
+                                <td class="text-center">{{data.indexOf(item) + 1}}</td>
+                                <td>{{item.groupName}}</td>
+                                <td>{{item.description}}</td>
+                                <td>{{item.isActive === true ? 'Có hiệu lực' : 'Không hiệu lực'}}</td>
+                                <td class="hander text-center">
+                                    <a href='' class="btn btn-default hint--top" aria-label="Chỉnh sửa" ng-click="loadFormEditRole(item)"> <i class="fa fa-pencil"></i></a>
+                                    <a href='' class="btn btn-default hint--top" aria-label="Cài đặt" ng-click="loadFormActionOfRole(item)"> <i class="fa fa-cogs"></i></a>
+                                    <a href='' class="btn btn-default hint--top" aria-label="Xóa nhóm quyền" ng-click="confirmDeleteRole(item)" style="color: red;"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @Html.Partial("~/Areas/Admin/Views/PartialGlobal/pagingTable.cshtml")
+        </div>
+    </div>
+
+    @*Modal thêm nhóm quyền *@
+    <div class="modal fade" id="modal-add-role">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #367fa9; color: #fff;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title">Thêm nhóm quyền {{RoleAdd.TenKho}}</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="">Tên nhóm quyền (*):</label>
+                        <input name="tenKho" class="form-control" ng-model="RoleAdd.groupName" />
+                    </div>
+                    <div class="form-group">
+                        <label for="">Mô tả:</label>
+                        <input name="diaChi" class="form-control" ng-model="RoleAdd.description" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" ng-click="addNewRole()">Thêm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* end modal thêm nhóm quyền *@
+
+    @* Modal xóa nhóm quyền *@
+    <div class="modal modal-danger fade" id="modal-confirm-delete-role">
+        <div class="modal-dialog">
+            <form>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Xác nhận thao tác xóa</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Bạn có muốn xóa nhóm quyền "{{roleDelete.groupName}}"?</h3>
+                    </div>
+                    <div class="modal-footer">
+                        <input class="btn btn-default pull-left" data-dismiss="modal" value="Hủy" style="width: 55px;">
+                        <button type="submit" class="btn btn-danger" ng-click="deleteRole()" data-dismiss="modal">Thực hiện xóa</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    @* end xóa nhóm quyền *@
+
+    @* Chỉnh sửa chức năng nhóm quyền *@
+    <div class="modal fade edit" id="modal-view-modul-role">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #367fa9; color: #fff;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title">Quản lý quyền nhóm " {{roleViewAction.groupName}} "</h3>
+                </div>
+                <div class="modal-body">
+                    <h4>
+                        Các quyền hiện có ( {{(listActionOfRole | filter: {checkeds: true}).length }}/{{(listActionOfRole).length}} )
+                    </h4>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box">
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <ul class="sidebar-nav">
+                                        <li ng-repeat="item in model.jModul">
+                                            <a href="javascript: void(0)" class="sidebar-nav-menu">
+                                                <span>{{item.controllerDispay === null ? item.controllerName: item.controllerDispay}} ( {{(item.listAction | filter: {checkeds: true}).length}}/{{item.listAction.length}} )</span>
+                                            </a>
+                                            <div class="sidebar-menu">
+                                                <ul style="list-style-type: none;">
+                                                    <li ng-repeat="item1 in item.listAction">
+                                                        <input type="checkbox" ng-model="item1.checkeds" class="flat-red" />
+                                                        {{item1.display === null ? (item1.name === null ? item1.action : item1.name) : item1.display}}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" ng-click="luuCaiDatQuyen()" class="btn btn-primary pull-right" data-dismiss="modal">Lưu</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    @* ./End Chỉnh sửa chức năng nhóm quyền *@
+
+</div>
+
+@section scripts{
+    <script>
+            //myApp = angular.module("myapp", []);
+        myApp.controller('RolePage', ['$scope', '$http', function ($scope, $http) {
+
+            $scope.model = @Html.Raw(Json.Serialize(Model.Value));
+            $scope.data = $scope.model.jRole;
+            //Sort
+            $scope.sortBy = Object.keys($scope.data[0])[1];
+            $scope.sortType = false;
+
+            //Paging
+            $scope.totalItems = function () { return $scope.data.length; };
+            $scope.currentPage = 1;
+            $scope.itemsOnPage = 30;
+            $scope.maxSize = 5;
+            $scope.dataPagingRole = function () {
+                return $scope.loadDataPaging($scope.data, $scope.currentPage, $scope.itemsOnPage);
+            }
+            //End paging
+
+            //Form add new nhóm quyền
+            $scope.loadFormAddNewRole = function () {
+                $scope.RoleAdd = {};
+                $("#modal-add-role").modal("show");
+            };
+            $scope.addNewRole = function () {
+                var statusCode = {
+                    200: function (res) {
+                        if (res.success) {
+                            $scope.RoleAdd.id = res.idNew;
+                            $scope.model.jRole.push($scope.RoleAdd);
+                            $("#modal-add-role").modal("hide");
+                            swal(res.message, "", "success");
+                            $scope.$applyAsync();
+                        }
+                        else {
+                            swal(res.message, "", "error");
+                        }
+                    }
+                }
+                AjaxPostData("/admin/MgRole/AddNewRole", { newRole: $scope.RoleAdd }, statusCode);
+            };
+
+            //Form confirm delete nhóm quyền
+            $scope.confirmDeleteRole = function (role) {
+                $scope.roleDelete = role;
+                $("#modal-confirm-delete-role").modal("show");
+            };
+            //Thực hiện xóa nhóm quyền
+            $scope.deleteRole = function () {
+                $("#modal-confirm-delete-role").modal("hide");
+                var indexRoleDelete = $scope.model.jRole.findIndex(rl => rl.id === $scope.roleDelete.id);
+                var statusCode = {
+                    200: function (res) {
+                        if (res.success) {
+                            swal(res.message, "", "success");
+                            $scope.model.jRole.splice(indexRoleDelete, 1);
+                            $scope.$applyAsync();
+                        }
+                        else {
+                            swal(res.message, "", "error");
+                        }
+                    }
+                }
+                AjaxPostData("/admin/MgRole/DeleteRole", { roleId: $scope.roleDelete.id }, statusCode);
+
+            };
+
+            $scope.loadFormActionOfRole = function (item) {
+                $scope.roleViewAction = item;
+                $scope.listActionOfRole = [];
+
+                $scope.model.jModul.forEach(function(modul){
+                    modul.listAction.forEach(function(action){
+                        var index = $scope.model.jRoleAction.findIndex(rlAc => rlAc.actionId === action.id && rlAc.roleGroupId == item.id);
+                        action.checkeds = index >= 0 ? true : false;
+                        $scope.listActionOfRole.push(action);
+                    })
+                })
+
+                $("#modal-view-modul-role").modal("show");
+            };
+
+            scope = $scope;
+            }]);
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            var isactive;
+            $("#modal-view-modul-role ul.sidebar-nav li").on("click", function () {
+                var $this = this;
+                $("#modal-view-modul-role ul.sidebar-nav li").each(function (index, item) {
+                    if ($this != item) {
+                        $(item).removeClass("active");
+                    }
+                })
+                if (this != isactive) {
+                    $(this).addClass("active");
+                    isactive = this;
+                }
+                else {
+                    $(this).removeClass("active");
+                    isactive = null;
+                }
+            });
+        })
+
+    </script>
+}
+

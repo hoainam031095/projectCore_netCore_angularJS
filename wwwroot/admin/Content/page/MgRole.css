@@ -1,0 +1,35 @@
+﻿
+#modal-view-modul-role .modal-dialog {
+    width: 80%;
+}
+
+#modal-view-modul-role li.ng-scope {
+    border: 1px solid #bbb;
+    margin-bottom: 3px;
+}
+
+    #modal-view-modul-role li.ng-scope ul{
+        background-color: #fff;
+    }
+
+    #modal-view-modul-role .ng-binding.ng-scope {
+        margin-bottom: 3px;
+        display: inline;
+        border: none;
+        padding: 0px 10px;
+    }
+
+#modal-view-modul-role a.sidebar-nav-menu {
+    color: #000;
+}
+
+#modal-view-modul-role ul.sidebar-nav > li:hover ul {
+    display: none !important;
+}
+
+#modal-view-modul-role ul.sidebar-nav > li.active ul {
+    display: block !important;
+    padding: 20px 10px;
+}
+
+    

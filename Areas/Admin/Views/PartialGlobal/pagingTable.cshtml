@@ -1,0 +1,10 @@
+﻿<div class="row row-paging">
+    <div class="col-sm-4 info-paging">
+        <span> Trang {{currentPage}} / {{numPages}} ( tổng cộng có {{totalItems()}} bản ghi )</span>
+    </div>
+    <div class="col-sm-8 text-right">
+        <uib-pagination total-items="totalItems()" ng-model="currentPage" max-size="maxSize" items-per-page="itemsOnPage" num-pages="numPages"
+                        previous-text="Trước" next-text="Tiếp" first-text="Đầu" last-text="Cuối" class="pagination-sm" boundary-links="true" rotate="false">
+        </uib-pagination>
+    </div>
+</div>

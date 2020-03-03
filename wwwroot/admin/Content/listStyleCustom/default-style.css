@@ -1,0 +1,88 @@
+﻿
+#page-container, #sidebar, #sidebar-alt {
+    background-color: #394263;
+}
+
+a.sidebar-brand:focus, a.sidebar-brand:hover, a.sidebar-title:focus, a.sidebar-title:hover {
+    background-color: #1bbae1;
+}
+
+ul.sidebar-nav > li > ul {
+    background-color: #394263;
+}
+/*Navbar*/
+.nav.navbar-nav-custom > li.open > a, .nav.navbar-nav-custom > li > a:focus, .nav.navbar-nav-custom > li > a:hover {
+    background-color: #1bbae1;
+}
+
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:focus,
+.dropdown-menu > .active > a:hover, .dropdown-menu > li > a:focus,
+.dropdown-menu > li > a:hover, .nav .open > a,
+.nav .open > a:focus, .nav .open > a:hover, .nav-pills > li.active > a,
+.nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+    background-color: #1bbae1;
+}
+
+/*Text layout*/
+.text-primary, .text-primary:hover, a, a.text-primary, a.text-primary:focus, a.text-primary:hover, a:focus, a:hover {
+    color: #1bbae1;
+}
+
+/*Content*/
+.btn-primary.btn-alt {
+    color: #1bbae1;
+}
+
+.btn-primary {
+    background-color: #6ad2eb;
+    border-color: #1bbae1;
+}
+
+    .btn-primary:hover {
+        background-color: #1bbae1;
+        border-color: #1593b3;
+        color: #fff;
+    }
+
+.btn-info {
+    background-color: #7abce7;
+    border-color: #3498db;
+    color: #fff;
+}
+
+    .btn-info:hover {
+        background-color: #3498db;
+        border-color: #2875a8;
+        color: #fff;
+    }
+
+.btn-primary.active, .btn-primary.active:focus,
+.btn-primary.active:hover, .btn-primary.disabled,
+.btn-primary.disabled.active, .btn-primary.disabled:active,
+.btn-primary.disabled:focus, .btn-primary.disabled:hover, .btn-primary.focus,
+.btn-primary:active, .btn-primary:active:focus, .btn-primary:active:hover,
+.btn-primary:focus, .btn-primary[disabled].active, .btn-primary[disabled].active:focus,
+.btn-primary[disabled].focus, .btn-primary[disabled]:active, .btn-primary[disabled]:active:focus,
+.btn-primary[disabled]:focus, .btn-primary[disabled]:hover, .open .btn-primary.dropdown-toggle,
+.open .btn-primary.dropdown-toggle.focus, .open .btn-primary.dropdown-toggle:focus,
+.open .btn-primary.dropdown-toggle:hover, fieldset[disabled] .btn-primary.active,
+fieldset[disabled] .btn-primary.active:focus, fieldset[disabled] .btn-primary.focus,
+fieldset[disabled] .btn-primary:active, fieldset[disabled] .btn-primary:active:focus,
+fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary:hover {
+    background-color: #3498db;
+    border-color: #3498db;
+    color: #fff;
+}
+
+.pagination > li > a, .pagination > li > span {
+    color: #1bbae1;
+}
+
+.pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover,
+.pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
+    background-color: #1bbae1;
+}
+
+.pager > li > a:hover, .pagination > li > a:hover {
+    background-color: #1bbae1;
+}

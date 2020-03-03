@@ -1,0 +1,297 @@
+﻿@{
+    ViewData["Title"] = "Modul";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link href="~/admin/Content/buttons.dataTables.min.css" rel="stylesheet" />
+    <style type="text/css">
+        .edit .modal-dialog {
+            width: 40%;
+        }
+
+        #modal-view-action-modul .modal-dialog {
+            width: 60%;
+        }
+    </style>
+}
+<ul class="breadcrumb breadcrumb-top">
+    Hệ thống >
+    <a href="#">Modul</a>
+</ul>
+<div class="block" ng-controller="ModulPage">
+    <div class="block-title">
+        <div class="block-options pull-right">
+            <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-primary hint--top" aria-label="Thu nhỏ" data-toggle="block-toggle-content"><i class="fa fa-arrows-v"></i></a>
+            <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-primary hint--top" aria-label="Toàn màn hình" data-toggle="block-toggle-fullscreen"><i class="fa fa-desktop"></i></a>
+        </div>
+        <h2><strong>Danh sách modul</strong></h2>
+    </div>
+    <div class="block-content">
+
+        @* Danh sách modul *@
+        <table class="dataTable table table-vcenter table-condensed table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">STT</th>
+                    <th class="text-center">Modul</th>
+                    <th class="text-center">Tên định nghĩa</th>
+                    <th class="text-center">Mô tả</th>
+                    <th class="text-center">Trạng thái</th>
+                    <th class="text-center">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in dataPagingRole() track by item.id">
+                    <td class="text-center">{{data.indexOf(item) + 1}}</td>
+                    <td>{{item.controller}}</td>
+                    <td>{{item.display == null ? (item.name == null ? item.controller : item.name) : item.display}}</td>
+                    <td>{{item.description}}</td>
+                    <td><a href="javascript: void(0)" class="hint--top" aria-label="Click thay đổi trạng thái" ng-click="updateStatusModul(item.id)">{{item.isActive == true ? 'Hoạt động' : 'Không hoạt động'}}</a></td>
+                    <td class="hander text-center">
+                        <a href='' class="btn btn-default hint--top" aria-label="Chỉnh sửa" ng-click="loadFormEditModul(item)"> <i class="fa fa-pencil"></i></a>
+                        <a href='' class="btn btn-default hint--top" aria-label="Xem action" ng-click="loadActionOfModul(item)"><i class="fa fa-eye"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row row-paging">
+            <div class="col-sm-4 info-paging">
+                <span> Trang {{currentPage}} / {{numPages}} ( tổng cộng có {{totalItems()}} bản ghi )</span>
+            </div>
+            <div class="col-sm-8 text-right">
+                <pagination total-items="totalItems()"
+                            ng-model="currentPage"
+                            max-size="maxSize"
+                            items-per-page="itemsOnPage"
+                            num-pages="numPages"
+                            previous-text="Trước" next-text="Tiếp" first-text="Đầu" last-text="Cuối"
+                            class="pagination-sm" boundary-links="true">
+                </pagination>
+            </div>
+        </div>
+
+        @* Edit modul / modal-edit-modul*@
+        <div class="modal fade edit" id="modal-edit-modul">
+            <div class="modal-dialog">
+                <form class="formNhap">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #367fa9; color: #fff;">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h3 class="modal-title">Chỉnh sửa modul "{{modulEdit.name == null ? modulEdit.controller : modulEdit.name}}"</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="">Tên modul (*):</label>
+                                <input class="form-control" ng-model="modulEdit.name" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="">Tên hiển thị (*):</label>
+                                <input class="form-control" ng-model="modulEdit.display" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="">Mô tả:</label>
+                                <input class="form-control" ng-model="modulEdit.description" />
+                            </div>
+                            <div class="form-group" style="width: 95%">
+                                <label for="select_group_modul">Nhóm modul</label>
+                                <select class="form-control" id="select_group_modul" ng-options="item.id as (item.display === null ? item.name : item.display) for item in model.jGroupModul" ng-model="modulEdit.parentId">
+                                    <option value="">--- Chọn nhóm modul ---</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary" ng-click="saveEditModul()">Lưu</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        @* ./Edit modul *@
+
+        @* View action of modul / modal-view-action-modul*@
+        <div class="modal fade" id="modal-view-action-modul">
+            <div class="modal-dialog">
+                <form class="formNhap">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #367fa9; color: #fff;">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h3 class="modal-title">Danh sách action của modul "{{modulView.name == null ? modulView.controller : modulView.name}}"</h3>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-vcenter table-condensed table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">STT</th>
+                                        <th class="text-center">Modul</th>
+                                        <th class="text-center">Tên định nghĩa</th>
+                                        <th class="text-center">Mô tả</th>
+                                        <th class="text-center">Trạng thái</th>
+                                        <th class="text-center">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in modulView.jaction track by item.id">
+                                        <td class="text-center">{{modulView.jaction.indexOf(item) + 1}}</td>
+                                        <td>{{item.action}}</td>
+                                        <td>{{item.display == null ? (item.name == null ? item.action : item.name) : item.display}}</td>
+                                        <td>{{item.description}}</td>
+                                        <td><a href="javascript: void(0)" class="hint--top" aria-label="Click thay đổi trạng thái" ng-click="updateStatusAction(item.id)">{{item.isActive == true ? 'Hoạt động' : 'Không hoạt động'}}</a></td>
+                                        <td class="hander text-center">
+                                            <a href='' class="btn btn-default hint--top" aria-label="Chỉnh sửa" ng-click="loadFormEditAction(item)"> <i class="fa fa-pencil"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Đóng</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        @* ./view action of modul *@
+
+        @* Edit action / modal-edit-action*@
+        <div class="modal fade edit" id="modal-edit-action">
+            <div class="modal-dialog">
+                <form class="formNhap">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #367fa9; color: #fff;">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h3 class="modal-title">Chỉnh sửa action "{{actionEdit.name == null ? actionEdit.action : modulEdit.name}}"</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="">Tên action (*):</label>
+                                <input class="form-control" ng-model="actionEdit.name" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="">Tên hiển thị (*):</label>
+                                <input class="form-control" ng-model="actionEdit.display" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="">Mô tả:</label>
+                                <input class="form-control" ng-model="actionEdit.description" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary" ng-click="saveEditAction()">Lưu</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        @* ./Edit action *@
+
+    </div>
+</div>
+
+@section scripts{
+    <script>
+            //myApp = angular.module("myapp", []);
+            myApp.controller('ModulPage', ['$scope', '$http', function ($scope, $http) {
+                $scope.model = @Html.Raw(Json.Serialize(Model.Value));
+
+                //Paging
+                $scope.data = $scope.model.jControll;
+                $scope.totalItems = function () { return $scope.data.length; };
+                $scope.currentPage = 1;
+                $scope.itemsOnPage = 30;
+                $scope.maxSize = 5;
+                $scope.dataPagingRole = function () {
+                    return $scope.loadDataPaging($scope.data, $scope.currentPage, $scope.itemsOnPage);
+                }
+                //End paging
+
+                //thay đổi status modul
+                $scope.updateStatusModul = function (maControll) {
+                    $scope.model.jControll.find(md => md.id === maControll).isActive = !$scope.model.jControll.find(md => md.id === maControll).isActive;
+                     var statusCode = {
+                        200: function (res) {
+                        }
+                     }
+                     AjaxPostData("/admin/MgModul/UpdateStatusModul", { maControll: maControll }, statusCode);
+                }
+                //Chỉnh sửa modul
+                $scope.loadFormEditModul = function (controll) {
+                    $scope.modulEdit = {};
+                    $scope.modulEdit = controll;
+                    $("#modal-edit-modul").modal("show");
+                };
+                $scope.saveEditModul = function () {
+                    var modulNew = $scope.modulEdit;
+                    var modulOld = $scope.model.jControll.find(md => md.id === $scope.modulEdit.id);
+                    var statusCode = {
+                        200: function (res) {
+                           if (res.success) {
+                                swal(res.message, "", "success");
+                                angular.extend(modulOld, modulNew);
+                                $("#modal-edit-modul").modal("hide");
+                            }
+                            else {
+                                swal(res.message, "", "error");
+                            }
+                        }
+                    }
+                    AjaxPostData("/admin/MgModul/EditModul", { mControll: modulNew }, statusCode);
+                }
+                //end chỉnh sửa modul
+
+                //Xem chitiet modul
+                $scope.loadActionOfModul = function (controll) {
+                    $scope.modulView = {};
+                    $scope.modulView = controll;
+                    $("#modal-view-action-modul").modal("show");
+                }
+                //end xem chi tiết modul
+
+                //thay đổi status action
+                $scope.updateStatusAction = function (maAction) {
+                    $scope.model.jControll.find(ctr => ctr.id === $scope.modulView.id).jaction.find(ac => ac.id === maAction).isActive
+                    = !$scope.model.jControll.find(ctr => ctr.id === $scope.modulView.id).jaction.find(ac => ac.id === maAction).isActive;
+                     var statusCode = {
+                        200: function (res) {
+                        }
+                     }
+                     AjaxPostData("/admin/MgModul/UpdateStatusAction", { maAction: maAction }, statusCode);
+                }
+                //Chỉnh sửa action
+                $scope.loadFormEditAction = function (action) {
+                    $scope.actionEdit = {};
+                    $scope.actionEdit = action;
+                    $("#modal-edit-action").modal("show");
+                };
+                $scope.saveEditAction = function () {
+                    var actionNew = $scope.actionEdit;
+                    var actionOld = $scope.model.jControll.find(ctr => ctr.id === $scope.modulView.id).jaction.find(ac => ac.id === $scope.actionEdit.id);
+                    var statusCode = {
+                        200: function (res) {
+                           if (res.success) {
+                                swal(res.message, "", "success");
+                                angular.extend(actionOld, actionNew);
+                                $("#modal-edit-action").modal("hide");
+                           }
+                            else {
+                                swal(res.message, "", "error");
+                           }
+                        }
+                    }
+                    AjaxPostData("/admin/MgModul/EditAction", { mAction: actionNew }, statusCode);
+                }
+                //end chỉnh sửa modul
+
+
+            scope = $scope;
+            }]);
+    </script>
+}
+

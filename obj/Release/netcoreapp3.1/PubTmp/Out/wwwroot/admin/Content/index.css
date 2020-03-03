@@ -1,0 +1,42 @@
+﻿
+.content-welcome {
+    text-align: center;
+    padding-bottom: 30px;
+}
+    .content-welcome .text-welcome{
+        text-align: left;
+    }
+
+    .content-welcome h2, .content-welcome h3 {
+        font-weight: 400;
+        margin: 12px;
+    }
+
+    .content-welcome img{
+        position: relative;
+        width: 100%;
+    }
+
+    .content-welcome .text-welcome{
+        padding-top: 25px;
+    }
+
+
+    .menu-quick .widget {
+        border: 1px solid #ccc;
+        height: 95px;
+    }
+    .menu-quick .widget .widget-content{
+        text-align: center;
+    }
+.widget-simple {
+    padding-right: 5px;
+}
+
+    .widget-simple .widget-icon.pull-left, .widget-simple .widget-image.pull-left {
+        margin-right: 0;
+    }
+    .widget-simple .widget-content small {
+        font-weight: 700;
+        color: #888;
+    }
